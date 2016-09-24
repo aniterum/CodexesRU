@@ -50,6 +50,6 @@ for i in $DOCS; do
   echo $actualsize
 
   echo "Парсится $FILE.txt в $FILE.xml"
-  ./parse.py $TXTDIR/${FILE}.txt $XMLDIR${FILE}.xml
+  ./parse.py $TXTDIR/${FILE}.txt $XMLDIR/${FILE}.xml
 
 done

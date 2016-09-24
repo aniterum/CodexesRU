@@ -59,12 +59,15 @@ razdel = re.compile("\s+(?:Раздел|РАЗДЕЛ) (\w+)\. (.+)$")
 article = re.compile("\s+Статья ((?:\d+\.)*(?:\d+-\d+\.*)*) (.+)$")
 num = re.compile("\s{10}(N \d+-ФЗ)")
 date = re.compile("\s+\d+\s\S+\s\d+ года")
+
 dummy1 = re.compile("\s+Москва, Кремль")
+dummy2 = re.compile("\s+ЧАСТЬ (?:ПЕРВАЯ|ВТОРАЯ|ТРЕТЬЯ|ЧЕТВЕРТАЯ|ПЯТАЯ|ШЕСТАЯ|СЕДЬМАЯ|ВОСЬМАЯ|ДЕВЯТАЯ)\. .+$")
 
 regulars = {prin:"prin", odob:"odob",
             chapt:"chapt", razdel:"razdel",
             article:"article", num:"num",
-            dummy1:"dummy",  date:"date"}
+            date:"date",
+            dummy1:"dummy1", dummy2:"dummy2"  }
 
 global doc, info, text, currentRazdel, currentChapter, currentArticle, currentLine, odobreno
 
