@@ -49,4 +49,7 @@ for i in $DOCS; do
   actualsize=$(du -b $TXTDIR/${FILE}.txt | cut  -f1)
   echo $actualsize
 
+  echo "Парсится $FILE.txt в $FILE.xml"
+  ./parse.py $TXTDIR/${FILE}.txt $XMLDIR${FILE}.xml
+
 done

@@ -3,7 +3,15 @@
 import re
 import os
 from os.path import splitext
+import sys
 from xml.etree import ElementTree as ET
+
+if len(sys.argv) != 3:
+    print("Неверное число параметров")
+    exit()
+
+fileName = sys.argv[1]
+ofile = sys.argv[2]
 
 names = {
 "admin":"Кодекс Российской Федерации об административных правонарушениях",
@@ -34,9 +42,9 @@ names = {
 
 TXTDIR = "laws_txt/"
 
-fileName = "air.txt"
 
-file = open(TXTDIR + fileName, 'rt').readlines()
+
+file = open(fileName, 'rt').readlines()
 lines = [i for i in file if i != "\n" ]
 index = -1
 
@@ -58,7 +66,7 @@ regulars = {prin:"prin", odob:"odob",
             article:"article", num:"num",
             dummy1:"dummy",  date:"date"}
 
-global doc, info, text, currentRazdel, currentChapter, currentArticle, currentLine
+global doc, info, text, currentRazdel, currentChapter, currentArticle, currentLine, odobreno
 
 doc = ET.Element("document")
 info = ET.Element("docinfo")
@@ -71,10 +79,10 @@ currentChapter = None
 currentArticle = None
 currentLine = None
 
-
+odobreno = False
 
 def proc(line):
-    global doc, info, text, currentRazdel, currentChapter, currentArticle, currentLine
+    global doc, info, text, currentRazdel, currentChapter, currentArticle, currentLine, odobreno
     for reg in regulars:
         if reg.match(line) != None:
             data = reg.findall(line)[0]
@@ -121,6 +129,7 @@ def proc(line):
                 info_approve.set("class", "approved")
                 info_approve.set("text", removeSpaces(data.rstrip()))
                 info.append(info_approve)
+                odobreno = True
             elif _type_ == "num":
                 info_num = ET.Element("info")
                 info_num.set("class", "number")
@@ -145,6 +154,8 @@ def removeSpaces(text):
 
 SPACES = " " * 12
 NL = " " * 10
+
+changes = []
 
 
 def getType(line):
@@ -180,6 +191,7 @@ while i < len(lines):
 
     else:
         if currentArticle != None:
+            odobreno = False
             if currentLine == None:
                 currentLine = ET.Element("p")
                 currentLine.set("text", lines[i].strip())
@@ -193,8 +205,11 @@ while i < len(lines):
                     par = currentLine.get("text")
                     currentLine.set("text", removeSpaces(par + " " + lines[i].strip()))
         else:
-            pass
-            #print(lines[i].strip())
+            if odobreno:
+                if lines[i].find(NL) != -1:
+                    changes.append(removeSpaces("\n"+lines[i].strip()))
+                else:
+                    changes.append(removeSpaces(lines[i].strip()))
 
 
 
@@ -208,9 +223,22 @@ if title != None:
     info_title.set("text", title)
     info.append(info_title)
 
+ch = " ".join(changes)
+bb = ch.split(";")
+
+chID = 1
+for i in bb:
+    change = ET.Element("info")
+    change.set("class", "changes")
+    change.set("id", str(chID))
+    chID += 1
+    change.set("text", i)
+    info.append(change)
+
+
 tree = ET.ElementTree(doc)
 tmpFile = '/tmp/tmp_xml.xml'
-ofile = "out.xml"
+
 
 tree.write(tmpFile, encoding="utf-8", xml_declaration=True)
 
