@@ -2,13 +2,16 @@
 
 import re
 import os
-from os.path import splitext
+from os.path import splitext, basename
 import sys
 from xml.etree import ElementTree as ET
 
 if len(sys.argv) != 3:
     print("Неверное число параметров")
     exit()
+
+#fileName = "laws_txt/civil_2.txt"
+#ofile = "/media/ramdisk/civil2.xml"
 
 fileName = sys.argv[1]
 ofile = sys.argv[2]
@@ -40,10 +43,6 @@ names = {
 "job":"Трудовой кодекс Российской Федерации",
 }
 
-TXTDIR = "laws_txt/"
-
-
-
 file = open(fileName, 'rt').readlines()
 lines = [i for i in file if i != "\n" ]
 index = -1
@@ -56,9 +55,9 @@ prin = re.compile("\s+Принят Государственной Думой\s+(
 odob = re.compile("\s+Одобрен Советом Федерации\s+(.+)$")
 chapt = re.compile("\s+(?:Глава|ГЛАВА) ((?:\d+)|(?:\w+))\. (.+)$")
 razdel = re.compile("\s+(?:Раздел|РАЗДЕЛ) (\w+)\. (.+)$")
-article = re.compile("\s+Статья ((?:\d+\.)*(?:\d+-\d+\.*)*) (.+)$")
+article = re.compile("\s+(?:Статья|С т а т ь я)\s{1,2}((?:\d+\.)*(?:\d+-\d+\.*)*) (.+)$")
 num = re.compile("\s{10}(N \d+-ФЗ)")
-date = re.compile("\s+\d+\s\S+\s\d+ года")
+date = re.compile("\s{8,10}\d+\s\S+\s\d+ года")
 
 dummy1 = re.compile("\s+Москва, Кремль")
 dummy2 = re.compile("\s+ЧАСТЬ (?:ПЕРВАЯ|ВТОРАЯ|ТРЕТЬЯ|ЧЕТВЕРТАЯ|ПЯТАЯ|ШЕСТАЯ|СЕДЬМАЯ|ВОСЬМАЯ|ДЕВЯТАЯ)\. .+$")
@@ -75,7 +74,7 @@ doc = ET.Element("document")
 info = ET.Element("docinfo")
 text = ET.Element("text")
 
-doc.append(text)
+
 doc.append(info)
 currentRazdel = None
 currentChapter = None
@@ -125,23 +124,23 @@ def proc(line):
             elif _type_ == "prin":
                 info_prin = ET.Element("info")
                 info_prin.set("class", "getpower")
-                info_prin.set("text", removeSpaces(data.rstrip()))
+                info_prin.set("text", removeSpaces(data.strip()))
                 info.append(info_prin)
             elif _type_ == "odob":
                 info_approve = ET.Element("info")
                 info_approve.set("class", "approved")
-                info_approve.set("text", removeSpaces(data.rstrip()))
+                info_approve.set("text", removeSpaces(data.strip()))
                 info.append(info_approve)
                 odobreno = True
             elif _type_ == "num":
                 info_num = ET.Element("info")
                 info_num.set("class", "number")
-                info_num.set("text", removeSpaces(data.rstrip()))
+                info_num.set("text", removeSpaces(data.strip()))
                 info.append(info_num)
             elif _type_ == "date":
                 info_date = ET.Element("info")
                 info_date.set("class", "date")
-                info_date.set("text", removeSpaces(data.rstrip()))
+                info_date.set("text", removeSpaces(data.strip()))
                 info.append(info_date)
                 
 
@@ -155,7 +154,7 @@ def removeSpaces(text):
 
     return text
 
-SPACES = " " * 12
+SPACES = " " * 14
 NL = " " * 10
 
 changes = []
@@ -169,8 +168,9 @@ def getType(line):
     return None
 
 i = -1
-while i < len(lines):
-    if (i+1) >= len(lines):
+len_lines = len(lines)
+while i < len_lines:
+    if (i+1) >= len_lines:
         break
     i += 1
     ans = getType(lines[i])
@@ -178,18 +178,13 @@ while i < len(lines):
         inline = lines[i].rstrip() + " "
         
         addIndex = 1
-        while True:
-            if i+addIndex >= len(lines):
-                break
-            if lines[i + addIndex].startswith(SPACES):
-                if (i + addIndex) >= len(lines):
-                    break
-                inline += " " + lines[i + addIndex].strip()
-                addIndex += 1
-            else:
-                i = i + addIndex - 1
-                break
+        
+        while (i+addIndex < len_lines) and (getType(lines[i + addIndex]) == None) and (lines[i + addIndex].startswith(SPACES)):
             
+            inline += " " + lines[i + addIndex].strip()
+            addIndex += 1
+
+        i = i + addIndex - 1    
         proc(inline)
 
     else:
@@ -217,7 +212,7 @@ while i < len(lines):
 
 
 
-name, _ = splitext(fileName)
+name, _ = splitext(basename(fileName))
 
 title = names.get(name)
 if title != None:
@@ -226,17 +221,16 @@ if title != None:
     info_title.set("text", title)
     info.append(info_title)
 
-ch = " ".join(changes)
-bb = ch.split(";")
+bb = [" ".join(changes)]
+#bb = ch.split(";")
 
-chID = 1
 for i in bb:
     change = ET.Element("info")
     change.set("class", "changes")
-    change.set("id", str(chID))
-    chID += 1
     change.set("text", i)
     info.append(change)
+
+doc.append(text)
 
 
 tree = ET.ElementTree(doc)

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <document>
+  <docinfo>
+    <info class="getpower" text="22 декабря 1995 года"/>
+    <info class="date" text="26 января 1996 года"/>
+    <info class="number" text="N 14-ФЗ"/>
+    <info class="title" text="Гражданский кодекс Российской Федерации. Часть вторая"/>
+    <info class="changes" text=""/>
+  </docinfo>
   <text>
     <razdel id="IV" text="ОТДЕЛЬНЫЕ ВИДЫ ОБЯЗАТЕЛЬСТВ">
       <chapter id="30" text="КУПЛЯ-ПРОДАЖА">
@@ -3596,10 +3603,4 @@
       </chapter>
     </razdel>
   </text>
-  <docinfo>
-    <info class="getpower" text="22 декабря 1995 года"/>
-    <info class="date" text=" 26 января 1996 года"/>
-    <info class="number" text="N 14-ФЗ"/>
-    <info class="changes" id="1" text=""/>
-  </docinfo>
 </document>
