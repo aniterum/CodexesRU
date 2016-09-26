@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<links>
+  <codex date="1474890116" name="housing.xml.zlib" packed="139884" size="1170514" title="Жилищный Кодекс" version="1"/>
+  <codex date="1474890115" name="criminal_exec.xml.zlib" packed="259724" size="1937248" title="Уголовно-Процессуальный Кодекс" version="1"/>
+  <codex date="1474890115" name="criminal.xml.zlib" packed="158780" size="1714816" title="Уголовный Кодекс" version="1"/>
+  <codex date="1474890115" name="criminal_proc.xml.zlib" packed="92046" size="610990" title="Уголовно-Исполнительный Кодекс" version="1"/>
+  <codex date="1474890116" name="job.xml.zlib" packed="210872" size="1646758" title="Трудовой Кодекс" version="1"/>
+  <codex date="1474890115" name="civil_3.xml.zlib" packed="43243" size="253522" title="Гражданский Кодекс . Часть Третья" version="1"/>
+  <codex date="1474890117" name="water_transport.xml.zlib" packed="86925" size="573512" title="Кодекс Внутреннего Водного Транспорта" version="1"/>
+  <codex date="1474890117" name="taxing_2.xml.zlib" packed="790502" size="6569775" title="Налоговый Кодекс . Часть Вторая" version="1"/>
+  <codex date="1474890113" name="admin_proc.xml.zlib" packed="158962" size="1190338" title="Кодекс Административного Судопроизводства" version="1"/>
+  <codex date="1474890114" name="civil_1.xml.zlib" packed="205246" size="1420764" title="Гражданский Кодекс . Часть Первая" version="1"/>
+  <codex date="1474890114" name="city_build.xml.zlib" packed="194284" size="1809998" title="Градостроительный Кодекс" version="1"/>
+  <codex date="1474890117" name="wood.xml.zlib" packed="62945" size="518918" title="Лесной Кодекс" version="1"/>
+  <codex date="1474890114" name="air.xml.zlib" packed="54404" size="405849" title="Воздушный Кодекс" version="1"/>
+  <codex date="1474890115" name="civil_proc.xml.zlib" packed="140565" size="970695" title="Гражданский Процессуальный Кодекс" version="1"/>
+  <codex date="1474890116" name="taxing_1.xml.zlib" packed="248570" size="2074693" title="Налоговый Кодекс . Часть Первая" version="1"/>
+  <codex date="1474890114" name="arbitraje_proc.xml.zlib" packed="169459" size="1316114" title="Арбитражный Процессуальный Кодекс" version="1"/>
+  <codex date="1474890115" name="family.xml.zlib" packed="58035" size="362770" title="Семейный Кодекс" version="1"/>
+  <codex date="1474890114" name="civil_2.xml.zlib" packed="170524" size="1097711" title="Гражданский Кодекс . Часть Вторая" version="1"/>
+  <codex date="1474890117" name="water.xml.zlib" packed="39517" size="281546" title="Водный Кодекс" version="1"/>
+  <codex date="1474890114" name="admin.xml.zlib" packed="394528" size="4017572" title="Кодекс Об Административных Правонарушениях" version="1"/>
+  <codex date="1474890115" name="civil_4.xml.zlib" packed="140309" size="1057043" title="Гражданский Кодекс . Часть Четвертая" version="1"/>
+  <codex date="1474890114" name="budget.xml.zlib" packed="213093" size="2224845" title="Бюджетный Кодекс" version="1"/>
+  <codex date="1474890116" name="seafaring_trade.xml.zlib" packed="124607" size="847890" title="Кодекс Торгового Мореплавания" version="1"/>
+  <codex date="1474890115" name="ground.xml.zlib" packed="127881" size="1052825" title="Земельный Кодекс" version="1"/>
+</links>
