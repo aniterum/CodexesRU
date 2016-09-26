@@ -3,6 +3,7 @@
 
 import sys
 from os.path import exists
+import re
 from xml.etree import ElementTree as ET
 
 
@@ -10,9 +11,10 @@ if len(sys.argv) != 2:
     print("Неверное число параметров")
     exit()
 
-def errexit(item):
+def errexit(item, leave=True):
     print("->", item)
-    exit()
+    if leave:
+        exit()
 
 #inFile = "laws_xml/air.xml"
 inFile = sys.argv[1]
@@ -43,10 +45,10 @@ if docinfo == None:
     errexit("docinfo")
 
 if len(text.getchildren()) == 0:
-    errexit("text No child")
+    errexit("text no child")
 
 if len(docinfo.getchildren()) == 0:
-    errexit("docinfo No child")
+    errexit("docinfo no child")
 
 if len(docinfo.getchildren()) > 6:
     print("->", "docinfo has MORE than 6 subelements")
@@ -81,25 +83,78 @@ for item in docinfo.getchildren():
             changes = item_text
 
 if getpower == None:
-    errexit("NO getpower")
+    errexit("no getpower", False)
 
 if approved == None:
-    errexit("NO approved")
+    errexit("no approved", False)
 
 if date == None:
-    errexit("NO date")
+    errexit("no date", False)
 
 if number == None:
-    errexit("NO number")
+    errexit("no number", False)
 
 if title == None:
-    errexit("NO title")
+    errexit("no title", False)
 
 if changes == None:
-    errexit("NO changes")
+    errexit("no changes", False)
 
+re_num = re.compile("(\d+)\.*-*(\d*)-*(\d*)-*(\d*)")
+def procChapter(child):
+    artIDS = {}
+    print("    chapter", child.get("id"))
+    int_art_id = 0
+    ch_id = child.get("id")
+    ch_text = child.get("text")
+    if ch_id == None:
+        print("no chapter id")
+    else:
+        pass
+        #print("Chapter", ch_id)
+        
+    if ch_text == None:
+        print("no chapter text")
+        
+    for article in child.getchildren():
+        art_id = article.get("id")
+        art_title = article.get("text")
+        if art_id == None:
+            print("article no id")
+        else:
+            ID, ID_1, ID_2, ID_3 = re_num.findall(art_id)[0]
+            if artIDS.get(ID) != None:
+                #print(20*" " + "\\" , ID_1, ID_2, ID_3)
+                pass
+            else:
+                artIDS[ID] = [ID_1, ID_2, ID_3]
+            print("         article", "|".join([ID, ID_1, ID_2, ID_3]) )
 
+                
+        if art_title == None:
+            print("article title")
 
+#Тест глав
+if len(text.getchildren()) == 0:
+    errexit("no razdels, chapters")
+
+for razdel_chapter in text.getchildren():
+    if razdel_chapter.tag == "razdel":
+        print("razdel", razdel_chapter.get("id"))
+        if len(razdel_chapter.getchildren()) == 0:
+            print("---> razdel no children")
+
+        if razdel_chapter.getchildren()[0].tag == "chapter":
+            for chapter in razdel_chapter.getchildren():
+                procChapter(chapter)
+        else:
+            procChapter(razdel_chapter)
+                
+    elif razdel_chapter.tag == "chapter":
+        procChapter(razdel_chapter)
+    else:
+        print("---- ", razdel_chapter.tag, razdel_chapter.get("text"))
+            
 
 
 

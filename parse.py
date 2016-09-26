@@ -133,6 +133,8 @@ def proc(line):
                 info.append(info_approve)
                 odobreno = True
             elif _type_ == "num":
+                currentArticle = None
+                currentLine = None
                 info_num = ET.Element("info")
                 info_num.set("class", "number")
                 info_num.set("text", removeSpaces(data.strip()))
